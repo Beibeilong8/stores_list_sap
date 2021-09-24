@@ -1,11 +1,14 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller"
-], function (Controller) {
+	"karina/komarovich/controller/BaseController"
+], function (BaseController) {
 	"use strict";
 
-	return Controller.extend("karina.komarovich.controller.ProductDetails", {
+	return BaseController.extend("karina.komarovich.controller.ProductDetails", {
 		onNavToStoresOverview: function () {
-			this.getOwnerComponent().getRouter().navTo("StoresOverview");
-		}
+			this.navigateTo("StoresOverview");
+		},
+		onNavToStoreDetails: function () {
+			this.navigateTo("StoreDetails", { storeId: 1 });
+		},
 	});
 });

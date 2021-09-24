@@ -3,6 +3,12 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	controllerName="karina.komarovich.controller.ProductDetails">
 
+	<Breadcrumbs currentLocationText="" separatorStyle="{/selected}">
+		<Link press="onNavToStoresOverview" text="Stores List"/>
+		<Link press="onNavToStoreDetails" text="Store Details"/>
+		<Link press="onNavToProductDetails" text="Product Details"/>
+	</Breadcrumbs>
+
 	<Page title="Product Details">
 		<content>
 			<Button text="Stores Overview" press="onNavToStoresOverview" />

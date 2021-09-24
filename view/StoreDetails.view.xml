@@ -1,13 +1,183 @@
 <mvc:View
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:c="sap.ui.core"
+	xmlns:f="sap.f"
+	xmlns:layout="sap.ui.layout"
 	controllerName="karina.komarovich.controller.StoreDetails">
 
+
+	<NavContainer id="navContainer">
+		<pages >
+			<f:DynamicPage 
+				class="sapUiNoContentPadding"
+				showFooter="true">
+				<f:title>
+					<f:DynamicPageTitle>
+						<f:heading>
+							<Title text="Stores Details"/>
+						</f:heading>
+						<f:breadcrumbs>
+							<Breadcrumbs currentLocationText="" separatorStyle="{/selected}">
+								<Link press="onNavToStoresOverview" text="Stores List"/>
+								<Link press="onNavToStoreDetails" text="Store Details"/>
+							</Breadcrumbs>
+						</f:breadcrumbs>
+					</f:DynamicPageTitle>
+				</f:title>
+				<f:header>
+					<f:DynamicPageHeader pinnable="true">
+						<FlexBox alignItems="Start" justifyContent="SpaceBetween">
+							<Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+								<layout:HorizontalLayout allowWrapping="true">
+									<layout:VerticalLayout class="sapUiMediumMarginEnd">
+										<ObjectAttribute title="Email" text="{odata>Email}" />
+										<ObjectAttribute title="Phone number" text="{odata>PhoneNumber}" />
+										<ObjectAttribute title="Address" text="{odata>Address}" />
+									</layout:VerticalLayout>
+										<layout:VerticalLayout class="sapUiMediumMarginEnd">
+										<ObjectAttribute title="Established date" text="{odata>Established}" />
+										<ObjectAttribute title="Floot area" text="{odata>FloorArea}" />
+									</layout:VerticalLayout>
+								</layout:HorizontalLayout>
+							</Panel>
+						</FlexBox>
+					</f:DynamicPageHeader>
+				</f:header>
+				<f:content items="{odata>Products}">
+					<IconTabBar
+						id="idIconTabBar"
+						select=".onFilterSelect"
+						class="sapUiResponsiveContentPadding">
+					<items>
+						<IconTabFilter
+							showAll="true"
+							count="{/ProductCollectionStats/Counts/Total}"
+							text="All"
+							key="All" />
+						<IconTabSeparator />
+						<IconTabFilter
+							icon="sap-icon://complete"
+							iconColor="Positive"
+							count="{/ProductCollectionStats/Counts/Weight/Ok}"
+							text="Ok"
+							key="OK" />
+						<IconTabFilter
+							icon="sap-icon://alert"
+							iconColor="Critical"
+							count="{/ProductCollectionStats/Counts/Weight/Heavy}"
+							text="Storage"
+							key="STORAGE" />
+						<IconTabFilter
+							icon="sap-icon://warning"
+							iconColor="Negative"
+							count="{/ProductCollectionStats/Counts/Weight/Overweight}"
+							text="Out of stock"
+							key="Overweight" />
+					</items>
+						<content>
+							<Table
+								id="productsTable"
+								inset="false"
+								showSeparators="Inner"
+								headerText="Products"
+								items="{odata>rel_Poducts}">
+								<columns>
+									<Column
+										width="12em">
+										<Text text="Name" />
+									</Column>
+									<Column
+										minScreenWidth="Tablet"
+										demandPopin="true">
+										<Text text="Price" />
+									</Column>
+									<Column
+										minScreenWidth="Desktop"
+										demandPopin="true"
+										hAlign="End">
+										<Text text="Specs" />
+									</Column>
+									<Column
+										minScreenWidth="Desktop"
+										demandPopin="true"
+										hAlign="Center">
+										<Text text="SupplierInfo" />
+									</Column>
+									<Column
+										hAlign="End">
+										<Text text="Country of origin" />
+									</Column>
+									<Column
+										hAlign="End">
+										<Text text="Prod.Company" />
+									</Column>
+									<Column
+										hAlign="End">
+										<Text text="Rating" />
+									</Column>
+									<Column
+										hAlign="End">
+										<Text text="" />
+									</Column>
+								</columns>
+								<items>
+									<ColumnListItem>
+										<cells>
+											<ObjectIdentifier title="{products>Name}" text="{products>ProductId}" />
+											<ObjectIdentifier text="{products>Price}" />
+											<ObjectIdentifier text="{products>Specs}" />
+											<ObjectIdentifier text="{products>SupplierInfo}" />
+											<ObjectIdentifier text="{products>MadeIn}" />
+											<ObjectIdentifier text="{products>ProductionCompanyName}" />
+											<ObjectNumber
+													number="{
+														parts:[{path:'products>Price'},{path:'products>CurrencyCode'}],
+														type: 'sap.ui.model.type.Currency',
+														formatOptions: {showMeasure: false}
+													}"
+													unit="{products>Rating}" />
+											<!-- <ObjectIdentifier
+												title="{Name}"
+												text="{ProductId}"/>
+											<Text
+												text="{SupplierName}" />
+											<Text
+												text="{Width} x {Depth} x {Height} {DimUnit}" /> -->
+											<ObjectNumber
+												number="{WeightMeasure}"
+												unit="{WeightUnit}"
+												state="{
+													parts: [
+														{path: 'WeightMeasure'},
+														{path: 'WeightUnit'}
+													],
+													formatter: '.formatter.weightState'
+												}" />
+											<ObjectNumber
+													number="{
+														parts:[{path:'Price'},{path:'CurrencyCode'}],
+														type: 'sap.ui.model.type.Currency',
+														formatOptions: {showMeasure: false}
+													}"
+													unit="{CurrencyCode}" />
+										</cells>
+									</ColumnListItem>
+								</items>
+							</Table>
+						</content>
+					</IconTabBar>
+				</f:content>
+			</f:DynamicPage>
+		</pages>
+	</NavContainer>
+
+</mvc:View>
+
+<!-- 
 	<Page title="Store Details">
 		<content>
 			<Button text="Product Details" press="onNavToProductDetails" />
 			<Button text="Stores Overview" press="onNavToStoresOverview" />
 		</content>
-	</Page>
-
-</mvc:View>
+	</Page> -->
