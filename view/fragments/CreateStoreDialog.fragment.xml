@@ -1,0 +1,57 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core" >
+	<Dialog
+		id="EmployeeDialog"
+		title="{i18n>CreateStoreDialogTitle}"
+		afterClose="onAfterClose">
+		<f:SimpleForm
+			maxContainerCols="1"
+			layout="ResponsiveGridLayout"
+			labelSpanL="12"
+			labelSpanM="12"
+			emptySpanL="0"
+			emptySpanM="0"
+			columnsL="1"
+			columnsM="1">
+			<f:content>
+				<Label text="{i18n>StoreNameTitle}"/>
+				<Input 
+					value="{
+						path: 'newStoreModel>/Name',
+						type: 'sap.ui.model.type.String',
+						constraints: {
+							minLength: 1,
+							maxLength: 150
+						}
+					}" 
+					placeholder="{i18n>StoreNameInput}" />
+
+				<Label text="{i18n>StoreEmailTitle}"/>
+				<Input value="{newStoreModel>/Email}" placeholder="{i18n>StoreEmailInput}"/>
+
+				<Label text="{i18n>StorePhoneNumberTitle}"/>
+				<Input value="{newStoreModel>/PhoneNumber}" placeholder="{i18n>StorePhoneNumberInput}"/>
+
+				<Label text="{i18n>StoreAddressTitle}"/>
+				<Input value="{newStoreModel>/Address}" placeholder="{i18n>StoreAddressInput}"/>
+
+				<Label text="{i18n>StoreEstablishedTitle}"/>
+				<DatePicker 
+					value="{
+						path: 'newStoreModel>/Established'
+						type: 'sap.ui.model.type.DateTime'}" 
+					placeholder="{i18n>StoreEstablishedInput}"/>
+
+				<Label text="{i18n>StoreFloorAreaTitle}"/>
+				<Input value="{newStoreModel>/FloorArea}" placeholder="{i18n>StoreFloorAreaInput}"/>
+			</f:content>
+		</f:SimpleForm>
+
+		<buttons>
+			<Button text="{i18n>CreateButton}" press="onCreateStorePress" />
+			<Button text="{i18n>CancelButton}" press="onCancelPress" />
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

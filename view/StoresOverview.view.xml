@@ -10,11 +10,11 @@
 		<f:title>
 			<f:DynamicPageTitle>
 				<f:heading>
-					<Title text="Stores List"/>
+					<Title text="{i18n>StoresOverviewTitle}"/>
 				</f:heading>
 				<f:breadcrumbs>
 					<Breadcrumbs>
-						<Link press="onNavToStoresOverview" text="Stores List"/>
+						<Link press="onNavToStoresOverview" text="{i18n>BreadcrumbsStoresOverview}"/>
 					</Breadcrumbs>
 				</f:breadcrumbs>
 			</f:DynamicPageTitle>
@@ -25,20 +25,24 @@
 					width="100%" 
 					class="sapUiSmallMargin" 
 					liveChange=".onSearch" 
-					showRefreshButton="true"/>
+					showRefreshButton="true"
+					search="onStoresSearch"
+					placeholder="{i18n>SearchFieldPlaceholder}"/>
 			</f:DynamicPageHeader>
 		</f:header>
 		<f:content>
 			<List 
+				id="StoresTable"
 				items="{odata>/Stores}" 
-				noDataText="No stores available"
-				press="onProductsTableItemSelect">
+				noDataText="{i18n>StoresListNoDataText}"
+				>
 				<ObjectListItem 
-					title="{odata>Name}" 
+					title="{odata>Name}"
 					type="Active" 
 					press="onNavToStoreDetails" 
 					number="{odata>FloorArea}" 
-					numberUnit="{i18n>Unit}">
+					numberUnit="{i18n>FloorNumberUnit}">
+					<ObjectAttribute text="{odata>id}" visible="false"/>
 					<ObjectAttribute text="{odata>Address}" />
 				</ObjectListItem>
 			</List>
@@ -46,34 +50,12 @@
 		<f:footer>
 			<OverflowToolbar>
 				<ToolbarSpacer/>
-				<Button text="+ Create"/>
+				<Button 
+					type="Ghost"
+					icon="sap-icon://add"
+					text="{i18n>CreateButton}"
+					press="onOpenDialogCreateStore" />
 			</OverflowToolbar>
 		</f:footer> 			
 	</f:DynamicPage>
 </mvc:View>
-
-
-
-	<!-- <Page 
-		showHeader="false">
-
-	</Page> -->
-				<!-- <StandardListItem 
-					title="{odata>Name}"
-					description="{odata>Address}"
-					info="{odata>FloorArea} sq.m"
-					type="Active" 
-					press="onNavToStoreDetails"/> -->
-
-	<!-- title="{Name}"
-
-								description="{}"
-					icon="{}"
-					iconDensityAware="false"
-					iconInset="false"
-					info="{Price} {CurrencyCode}" 
-
-					
-	binding="{/ProductCollection}"
-	description="{Description}"
-	-->

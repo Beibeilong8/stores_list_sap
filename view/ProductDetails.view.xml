@@ -1,18 +1,138 @@
 <mvc:View
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:c="sap.ui.core"
+	xmlns:f="sap.f"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:layout="sap.ui.layout"
 	controllerName="karina.komarovich.controller.ProductDetails">
-
-	<Breadcrumbs currentLocationText="" separatorStyle="{/selected}">
-		<Link press="onNavToStoresOverview" text="Stores List"/>
-		<Link press="onNavToStoreDetails" text="Store Details"/>
-		<Link press="onNavToProductDetails" text="Product Details"/>
-	</Breadcrumbs>
-
-	<Page title="Product Details">
-		<content>
-			<Button text="Stores Overview" press="onNavToStoresOverview" />
-		</content>
-	</Page>
-
+	<f:DynamicPage 
+		class="sapUiResponsiveContentPadding">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="{i18n>ProductDetailsTitle} ({odata>Name})"/>
+				</f:heading>
+				<f:breadcrumbs>
+					<Breadcrumbs>
+						<Link press="onNavToStoresOverview" text="{i18n>BreadcrumbsStoresOverview}"/>
+						<Link press="onNavToStoreDetails" text="{i18n>BreadcrumbsStoreDetails}"/>
+						<Link press="onNavToProductDetails" text="{i18n>BreadcrumbsProductDetails}"/>
+					</Breadcrumbs>
+				</f:breadcrumbs>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<FlexBox alignItems="Start" justifyContent="SpaceBetween">
+					<Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+						<layout:VerticalLayout >
+		<form:Form id="FormChange354wide"
+			editable="true">
+			<form:formContainers>
+				<form:FormContainer>
+					<form:formElements>
+						<form:FormElement label="{i18n>ProductPanelPriceTitle}">
+							<form:fields>
+								<Input value="{odata>Price} {i18n>PriceNumberUnit}" id="name"/>
+							</form:fields>
+						</form:FormElement>
+						<form:FormElement label="{i18n>ProductPanelRatingTitle}">
+							<form:fields>
+								<Input value="{odata>Rating}" />
+								<Input value="{HouseNumber}">
+									<layoutData>
+										<layout:GridData span="XL1 L2 M2 S4" />
+									</layoutData>
+								</Input>
+							</form:fields>
+						</form:FormElement>
+						<form:FormElement label="ZIP Code and City">
+							<form:fields>
+								<Input value="{ZIPCode}">
+									<layoutData>
+										<layout:GridData span="XL1 L2 M2 S4" />
+									</layoutData>
+								</Input>
+								<Input value="{City}" />
+							</form:fields>
+						</form:FormElement>
+						<form:FormElement label="Country where the contact is located">
+							<form:fields>
+								<Select id="country" selectedKey="{Country}">
+									<items>
+										<c:Item text="England" key="England"/>
+										<c:Item text="Germany" key="Germany"/>
+										<c:Item text="USA" key="USA"/>
+									</items>
+								</Select>
+							</form:fields>
+						</form:FormElement>
+					</form:formElements>
+				</form:FormContainer>
+			</form:formContainers>
+		</form:Form>
+							<ObjectAttribute title="{i18n>ProductPanelPriceTitle}" text="{odata>Price} {i18n>PriceNumberUnit}" />
+							<ObjectAttribute title="{i18n>ProductPanelRatingTitle}" text="{odata>Rating}" />
+							<ObjectAttribute title="{i18n>ProductPanelSpecsTitle}" text="{odata>Specs}" />
+							<ObjectAttribute title="{i18n>ProductPanelSupplierInfoTitle}" text="{odata>SupplierInfo}" />
+							<ObjectAttribute title="{i18n>ProductPanelProductCompanyTitle}" text="{odata>ProductionCompanyName}" />
+							<ObjectAttribute title="{i18n>ProductPanelCountryTitle}" text="{odata>MadeIn}" />
+							<HBox>
+								<ObjectAttribute title="{i18n>ProductPanelStatusTitle}" />
+								<ObjectStatus 
+									class="sapUiTinyMarginBegin"
+									text="{odata>Status}"
+									inverted="true"
+									state="{= ${odata>Status} === 'OK' 		? 'Indication04' 
+											: ${odata>Status} === 'STORAGE' ? 'Indication03' 
+											: 'Indication02'}"/>
+							</HBox>
+						</layout:VerticalLayout>
+					</Panel>
+				</FlexBox>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content items="{odata>Products}">
+			<layout:VerticalLayout width="100%">
+				<HBox class="sapUiTinyMarginBeginEnd" alignItems="Center">
+					<Label
+						labelFor="NameInput"
+						text="{i18n>ProductCommentsAuthorNameTitle}:"
+						class="sapUiTinyMarginBeginEnd"
+						/>
+					<Input	
+					 	value="{newCommentModel>/Author}"
+						id="NameInput"
+						placeholder="{i18n>ProductCommentsAuthorNameInput}"/>
+					<Label
+						labelFor="RatingProduct"
+						text="{i18n>ProductCommentsAuthorRatingTitle}:"
+						class="sapUiTinyMarginBeginEnd"
+						/>
+					<RatingIndicator	
+						value="{newCommentModel>/Rating}"
+						id="RatingProduct"
+						tooltip="{i18n>ProductCommentsAuthorRatingTitle}"/>
+				</HBox>
+				<FeedInput
+					post="onCreateCommentPress"
+					value="{newCommentModel>/Message}"
+					placeholder="{i18n>CommentInputPlaceholder}"
+					showIcon="true"
+					icon="http://upload.wikimedia.org/wikipedia/commons/2/25/George_Washington_as_CIC_of_the_Continental_Army_bust.jpg" />
+				<List items="{odata>/ProductComments}" id="CommentsList">
+					<FeedListItem
+						sender="{odata>Author}"
+						icon="http://upload.wikimedia.org/wikipedia/commons/2/25/George_Washington_as_CIC_of_the_Continental_Army_bust.jpg"
+						iconDensityAware="false"
+						info="{i18n>ProductCommentsAuthorRatingTitle} : {odata>Rating}"
+						timestamp="{
+							path: 'odata>Posted',
+							type: 'sap.ui.model.type.Date'}"
+						text="{odata>Message}" />
+				</List>
+			</layout:VerticalLayout>
+		</f:content>
+	</f:DynamicPage>
 </mvc:View>

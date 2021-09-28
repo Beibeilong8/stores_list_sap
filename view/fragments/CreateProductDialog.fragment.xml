@@ -1,0 +1,64 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core" >
+	<Dialog
+		id="EmployeeDialog"
+		title="{i18n>CreateProductDialogTitle}"
+		afterClose="onAfterClose">
+		<f:SimpleForm
+			maxContainerCols="1"
+			layout="ResponsiveGridLayout"
+			labelSpanL="12"
+			labelSpanM="12"
+			emptySpanL="0"
+			emptySpanM="0"
+			columnsL="1"
+			columnsM="1">
+			<f:content>
+				<Label text="{i18n>ProductFormNameTitle}"/>
+				<Input value="{newProductModel>/Name}" placeholder="{i18n>ProductFormNameInput}" />
+				<Label text="{i18n>ProductFormPriceTitle}"/>
+				<HBox class="sapUiNoMarginEnd">
+					<Input 
+						value="{newProductModel>/Price}" 
+						placeholder="{i18n>ProductFormPriceInput}"
+						width="18rem"/>
+					<Text 
+						text="{i18n>PriceNumberUnit}" 
+						class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
+				</HBox>
+				<Label text="{i18n>ProductFormSpecsTitle}"/>
+				<Input value="{newProductModel>/Specs}" placeholder="{i18n>ProductFormSpecsInput}"/>
+				<Label text="{i18n>ProductFormRatingTitle}"/>
+				<Input 
+					value="{
+						path: newProductModel>/Rating
+						constraints: {
+							minLength: 1,
+							maxLength: 5
+						}
+					}" 
+					placeholder="{i18n>ProductFormRatingInput}"
+					/>
+				<Label text="{i18n>ProductFormSupplierInfoTitle}"/>
+				<Input value="{newProductModel>/SupplierInfo}" placeholder="{i18n>ProductFormSupplierInfoInput}"/>
+				<Label text="{i18n>ProductFormOriginCountryTitle}"/>
+				<Input value="{newProductModel>/MadeIn}" placeholder="{i18n>ProductFormOriginCountryInput}"/>
+				<Label text="{i18n>ProductFormCompanyTitle}"/>
+				<Input value="{newProductModel>/ProductionCompanyName}" placeholder="{i18n>ProductFormCompanyInput}"/>
+				<Label text="{i18n>ProductFormStatusTitle}"/>
+				<Select>
+						<core:Item key="{OK}" text="{i18n>StatusFilterOk}" />
+						<core:Item key="{STORAGE}" text="{i18n>StatusFilterStorage}" />
+						<core:Item key="{OUT_OF_STOCK}" text="{i18n>StatusFilterOut}" />
+				</Select>
+			</f:content>
+		</f:SimpleForm>
+
+		<buttons>
+			<Button text="{i18n>CreateButton}" press="onCreateProductPress" />
+			<Button text="{i18n>CancelButton}" press="onCancelPress" />
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

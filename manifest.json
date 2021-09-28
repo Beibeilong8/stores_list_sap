@@ -25,7 +25,7 @@
 			"phone": true
 		},
 		"supportedThemes": [
-			"sap_belize"
+			"sap_fiori_3"
 		]
 	},
 	"sap.ui5": {
@@ -74,18 +74,21 @@
 				"storesOverview": {
 					"viewName": "StoresOverview",
 					"viewId": "storesOverview",
+					"title": "Stores Overview",
 					"viewLevel": 1
 				},
 				
 				"storeDetails": {
 					"viewName": "StoreDetails",
 					"viewId": "storeDetails",
+					"title": "Store Details",
 					"viewLevel": 2
 				},
 
 				"productDetails": {
 					"viewName": "ProductDetails",
 					"viewId": "productDetails",
+					"title": "Product Details",
 					"viewLevel": 3
 				},
 
