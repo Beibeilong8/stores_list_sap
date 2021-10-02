@@ -8,9 +8,20 @@ sap.ui.define([
 	"sap/m/MessageBox"
 ], function (BaseController, Filter, FilterOperator, Sorter, JSONModel, MessageToast, MessageBox) {
 	"use strict";
+	/**
+	* Constants for save product id
+	*/
 	var sProductId;
+	/**
+	* Constants for save text product comment
+	*/
+	var sTextCommentValue;
+
 
 	return BaseController.extend("karina.komarovich.controller.ProductDetails", {
+		/**
+		 * Controller's "init" lifecycle method.
+		 */
 		onInit: function(){
 
 			this.getOwnerComponent().getRouter().getRoute("ProductDetails").attachPatternMatched(this.onPatternMatched, this);
@@ -28,96 +39,91 @@ sap.ui.define([
 			this.getView().setModel(oNewCommentModel, "newCommentModel");
 			this.getView().setModel(oModel, "appView");
 		},
-
-		// onAfterRendering: function () {
-		// 	var oODataModel = this.getView().getModel("odata");
-		// 	var oCommentsTable = this.byId("CommentsList");
-		// 	var oBinding = oCommentsTable.getBinding("items");
-		// 	var oAppView = this.getView().getModel("appView");
-	  
-		// 	oBinding.attachDataReceived(function () {
-		// 	  var oCtx = oCommentsTable.getBindingContext("odata");
-		// 	  var sStoresPath = oODataModel.createKey("/ProductComments", oCtx.getObject());
-		// 	//   var aStatuses = ["ALL", "OK", "STORAGE", "OUT_OF_STOCK"];
-	  
-		// 	//   aStatuses.forEach(function (sStatus) {
-		// 	// 	var oParams = {
-		// 	// 	  success: function (sCount) {
-		// 	// 		oAppView.setProperty(
-		// 	// 		  "/" + sStatus.toLowerCase() + "ProductsCount",
-		// 	// 		  sCount
-		// 	// 		);
-		// 	// 	  },
-		// 	// 	};
-	  
-		// 		// oODataModel.read(sStoresPath + "/rel_Products/$count", oParams);
-		// 	//   });
-		// 	});
-		// },
-
+		/**
+		 * Controller's "patternMatched" method.
+		 * 
+		 * @param {sap.ui.base.Event} oEvent event object.
+		 * 
+		 */
 		onPatternMatched: function (oEvent) {
-			var that = this;
-			sProductId = oEvent.mParameters.arguments.productId;
+			var that 		= this;
 			var oODataModel = that.getView().getModel("odata");
-			this.onFilterComments()
+				sProductId 	= oEvent.getParameter("arguments").productId;
+
 			oODataModel.metadataLoaded().then(function (){
-				var sKey = oODataModel.createKey("/ProductComments", { id: sProductId});
 				that.getView().bindObject({
-					path: sKey,
-					model: "odata"
+					path: 	oODataModel.createKey("/Products", {id: sProductId}),
+					model: 	"odata"
 				});
+				that.byId("CommentsList").bindObject({
+					path: 	"/ProductComments",
+					model: 	"odata"
+				});
+				that.onFilterComments();
 			});
 		},
-
-
 		/**
 		* "Create" comment button press event handler.
-		* 
-		*  @param {sap.ui.base.Event} oEvent event object
 		*/
-	   onCreateCommentPress: function () {
-		   var that 			= this,
-			   oODataModel 		= this.getView().getModel("odata"),
-			   oNewCommentModel	= this.getView().getModel("newCommentModel");
+	   	onCreateCommentPress: function () {
+			var that 				= this;
+			var oODataModel 		= this.getView().getModel("odata");
+			var oAuthorComment 		= this.byId("AuthorName");
+			var oRatingComment 		= this.byId("RatingProduct");
+			var oTextComment		= this.byId("CommentProduct");
+			var	oBundle 			= this.getView().getModel("i18n").getResourceBundle();
+			
+			if(!oAuthorComment.getValue() || !oRatingComment.getValue()){
+				sTextCommentValue 	= oTextComment.getValue();
+				if(!oAuthorComment.getValue()) {oAuthorComment.setValueState("Error")} 
+				else {oAuthorComment.setValueState("None")}
+				MessageBox.confirm(oBundle.getText("CommentCreateError"),(oAction) => {
+					if(oAction ==="OK"){oTextComment.setValue(sTextCommentValue)}
+				});
+			};
+		   	if(oAuthorComment.getValue() && oRatingComment.getValue()){
+				if(!sTextCommentValue){
+					sTextCommentValue = oTextComment.getValue();
+				}
+				var oEntryCtx = oODataModel.createEntry("/ProductComments", {
+					properties: {
+						Author: 	oAuthorComment.	getValue(),
+						Message: 	sTextCommentValue,
+						Rating: 	oRatingComment.	getValue(),
+						Posted: 	"" + new Date,
+						ProductId: 	sProductId
+					}});
+				oODataModel.	submitChanges();
+				oODataModel.	deleteCreatedEntry(oEntryCtx);
+				oAuthorComment.	setValue("");
+				oRatingComment.	setValue(0);
+				oAuthorComment.	setValueState("None")
+			}
 
-		   // create a new product object
-		   var oNewComment = {
-				"Author": 	oNewCommentModel.getProperty("/Author"),
-				"Message": 	oNewCommentModel.getProperty("/Message"),
-				"Rating": 	oNewCommentModel.getProperty("/Rating"),
-				"Posted": "",
-				"ProductId": sProductId
-		   };
-
-		   // execute "create" request
-		   oODataModel.create("/ProductComments", oNewComment, {
-			   success: function () {
-				   MessageToast.show("{i18n>StoreCreateSuccessMessage}");
-				   that.oDialog.close();
-			   },
-			   error: function () {
-				   MessageBox.error("{i18n>StoreCreateErrorMessage}");
-			   }
-		   });
-	   },
-		
-		onFilterComments: function (sProductId){
-			var oBinding = this.byId("CommentsList").getBinding("items"),
-				sfilterValue = new Filter("ProductId", FilterOperator.EQ, sProductId),
-				sSortValue = new Sorter("Posted", true);
-
-			oBinding.filter(sfilterValue);
-			oBinding.sort(sSortValue);
 		},
-
+		/**
+		 * "Filter" event handler of the Products.
+		 *
+		 * @param {sap.ui.base.Event} oEvent event object.
+		 */
+		onFilterComments: function (){
+			this.byId("CommentsList")
+				.getBinding("items")
+				.filter	(new Filter("ProductId", FilterOperator.EQ, sProductId))
+				.sort	(new Sorter("Posted", true));
+		},
+		/**
+		 * "NavToStores" event handler of the Page.
+		 */
 		onNavToStoresOverview: function () {
 			this.navigateTo("StoresOverview");
 		},
-
-		onNavToStoreDetails: function () {
-
-			var sStoreId = this.getView().getBindingContext("odata")
-			var i = sStoreId.getProperty("storeId");
+		/**
+		 * "NavToProducts" event handler of the Page.
+		 */
+		onNavToStoreDetails: function (oEvent) {
+			var oCtx = oEvent.getSource().getBindingContext("odata");
+			var sStoreId = oCtx.getObject("StoreId")
 			this.navigateTo("StoreDetails", { storeId: sStoreId});
 		},
 	});

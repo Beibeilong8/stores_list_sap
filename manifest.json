@@ -116,9 +116,12 @@
 				"settings": {
 					"defaultBindingMode": "TwoWay",
 					"useBatch": false,
-					"defaultCountMode": "None"
+					"defaultCountMode": "None",
+					"disableHeadRequestForToken": true,
+					"defaultOperationMode": "Server"
 				}
 			}
-		}
+		},
+		"handleValidation": true
 	}
 }

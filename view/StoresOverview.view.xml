@@ -34,8 +34,7 @@
 			<List 
 				id="StoresTable"
 				items="{odata>/Stores}" 
-				noDataText="{i18n>StoresListNoDataText}"
-				>
+				noDataText="{i18n>StoresListNoDataText}">
 				<ObjectListItem 
 					title="{odata>Name}"
 					type="Active" 

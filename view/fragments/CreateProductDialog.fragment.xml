@@ -4,7 +4,9 @@
 	xmlns:core="sap.ui.core" >
 	<Dialog
 		id="EmployeeDialog"
-		title="{i18n>CreateProductDialogTitle}"
+		title="{= ${appView>/createNewProduct}
+			? ${i18n>CreateProductDialogTitle} 
+			: ${i18n>EditProductDialogTitle}}"
 		afterClose="onAfterClose">
 		<f:SimpleForm
 			maxContainerCols="1"
@@ -17,38 +19,104 @@
 			columnsM="1">
 			<f:content>
 				<Label text="{i18n>ProductFormNameTitle}"/>
-				<Input value="{newProductModel>/Name}" placeholder="{i18n>ProductFormNameInput}" />
+				<Input 
+					value="{
+						path: 'Name',
+						type: 'sap.ui.model.type.String',
+						constraints: {
+							minLength: 1,
+							maxLength: 1000
+						}
+					}" 
+					placeholder="{i18n>ProductFormNameInput}" 
+					required="true"
+					id="ProductName"/>
 				<Label text="{i18n>ProductFormPriceTitle}"/>
 				<HBox class="sapUiNoMarginEnd">
 					<Input 
-						value="{newProductModel>/Price}" 
+						value="{
+							path: 'Price',
+							type: 'sap.ui.model.type.Integer',
+							constraints: {
+								minimum: 1,
+								maximum: 100000
+							}
+						}" 
 						placeholder="{i18n>ProductFormPriceInput}"
-						width="18rem"/>
+						width="18rem"
+						required="true"
+						id="ProductPrice"/>
 					<Text 
 						text="{i18n>PriceNumberUnit}" 
 						class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
 				</HBox>
 				<Label text="{i18n>ProductFormSpecsTitle}"/>
-				<Input value="{newProductModel>/Specs}" placeholder="{i18n>ProductFormSpecsInput}"/>
+				<Input 
+					value="{
+						path: 'Specs',
+						type: 'sap.ui.model.type.String',
+						constraints: {
+							minLength: 1,
+							maxLength: 1000
+						}
+					}" 
+					placeholder="{i18n>ProductFormSpecsInput}"
+					required="true"
+					id="ProductSpecs"/>
 				<Label text="{i18n>ProductFormRatingTitle}"/>
 				<Input 
 					value="{
-						path: newProductModel>/Rating
+						path: 'Rating',
+						type: 'sap.ui.model.type.Integer',
 						constraints: {
-							minLength: 1,
-							maxLength: 5
+							minimum: 1,
+							maximum: 5
 						}
 					}" 
 					placeholder="{i18n>ProductFormRatingInput}"
-					/>
+					required="true"
+					id="ProductRating"/>
 				<Label text="{i18n>ProductFormSupplierInfoTitle}"/>
-				<Input value="{newProductModel>/SupplierInfo}" placeholder="{i18n>ProductFormSupplierInfoInput}"/>
+				<Input 
+					value="{
+						path: 'SupplierInfo',
+						type: 'sap.ui.model.type.String',
+						constraints: {
+							minLength: 1,
+							maxLength: 1000
+						}
+					}" 
+					placeholder="{i18n>ProductFormSupplierInfoInput}"
+					required="true"
+					id="ProductSupplier"/>
 				<Label text="{i18n>ProductFormOriginCountryTitle}"/>
-				<Input value="{newProductModel>/MadeIn}" placeholder="{i18n>ProductFormOriginCountryInput}"/>
+				<Input 
+					value="{
+						path: 'MadeIn',
+						type: 'sap.ui.model.type.String',
+						constraints: {
+							minLength: 1,
+							maxLength: 1000
+						}
+					}" 
+					placeholder="{i18n>ProductFormOriginCountryInput}"
+					required="true"
+					id="ProductMadeIn"/>
 				<Label text="{i18n>ProductFormCompanyTitle}"/>
-				<Input value="{newProductModel>/ProductionCompanyName}" placeholder="{i18n>ProductFormCompanyInput}"/>
+				<Input 
+					value="{
+						path: 'ProductionCompanyName',
+						type: 'sap.ui.model.type.String',
+						constraints: {
+							minLength: 1,
+							maxLength: 1000
+						}
+					}" 
+					placeholder="{i18n>ProductFormCompanyInput}"
+					required="true"
+					id="ProductCompany"/>
 				<Label text="{i18n>ProductFormStatusTitle}"/>
-				<Select>
+				<Select id="ProductStorage" selectedKey="{Status}">
 						<core:Item key="{OK}" text="{i18n>StatusFilterOk}" />
 						<core:Item key="{STORAGE}" text="{i18n>StatusFilterStorage}" />
 						<core:Item key="{OUT_OF_STOCK}" text="{i18n>StatusFilterOut}" />
@@ -57,7 +125,11 @@
 		</f:SimpleForm>
 
 		<buttons>
-			<Button text="{i18n>CreateButton}" press="onCreateProductPress" />
+			<Button 
+				text="{= ${appView>/createNewProduct}
+					? ${i18n>CreateButton} 
+					: ${i18n>SaveButton}}" 
+				press="onSaveChangesProductPress" />
 			<Button text="{i18n>CancelButton}" press="onCancelPress" />
 		</buttons>
 	</Dialog>

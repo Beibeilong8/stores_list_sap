@@ -82,11 +82,13 @@
 								<ObjectAttribute title="{i18n>ProductPanelStatusTitle}" />
 								<ObjectStatus 
 									class="sapUiTinyMarginBegin"
-									text="{odata>Status}"
+									text="{= ${odata>Status} === 'OK' 		? ${i18n>StatusFilterOk} 
+											: ${odata>Status} === 'STORAGE' ? ${i18n>StatusFilterStorage} 
+																			: ${i18n>StatusFilterOut} }"
 									inverted="true"
 									state="{= ${odata>Status} === 'OK' 		? 'Indication04' 
 											: ${odata>Status} === 'STORAGE' ? 'Indication03' 
-											: 'Indication02'}"/>
+																			: 'Indication02'}"/>
 							</HBox>
 						</layout:VerticalLayout>
 					</Panel>
@@ -102,26 +104,52 @@
 						class="sapUiTinyMarginBeginEnd"
 						/>
 					<Input	
-					 	value="{newCommentModel>/Author}"
-						id="NameInput"
-						placeholder="{i18n>ProductCommentsAuthorNameInput}"/>
+					 	value="{
+							path: 'Author',
+							type: 'sap.ui.model.type.String',
+							constraints: {
+								minLength: 1,
+								maxLength: 1000
+							}
+						}" 
+						id="AuthorName"
+						placeholder="{i18n>ProductCommentsAuthorNameInput}"
+						required="true"/>
 					<Label
 						labelFor="RatingProduct"
 						text="{i18n>ProductCommentsAuthorRatingTitle}:"
 						class="sapUiTinyMarginBeginEnd"
 						/>
 					<RatingIndicator	
-						value="{newCommentModel>/Rating}"
+						value="{
+							path: 'Rating',
+							type: 'sap.ui.model.type.Integer',
+							constraints: {
+								minimum: 1,
+								maximum: 5
+							}
+						}" 
 						id="RatingProduct"
 						tooltip="{i18n>ProductCommentsAuthorRatingTitle}"/>
 				</HBox>
 				<FeedInput
 					post="onCreateCommentPress"
-					value="{newCommentModel>/Message}"
+					value="{
+						path: 'Message',
+						type: 'sap.ui.model.type.Integer',
+						constraints: {
+							minimum: 1,
+							maximum: 5
+						}
+					}"
+					id="CommentProduct"
 					placeholder="{i18n>CommentInputPlaceholder}"
 					showIcon="true"
-					icon="http://upload.wikimedia.org/wikipedia/commons/2/25/George_Washington_as_CIC_of_the_Continental_Army_bust.jpg" />
-				<List items="{odata>/ProductComments}" id="CommentsList">
+					icon="http://upload.wikimedia.org/wikipedia/commons/2/25/George_Washington_as_CIC_of_the_Continental_Army_bust.jpg"/>
+				<List 
+					items="{odata>/ProductComments}" 
+					id="CommentsList"
+					noDataText="{i18n>ProductCommentsListNoDataText}">
 					<FeedListItem
 						sender="{odata>Author}"
 						icon="http://upload.wikimedia.org/wikipedia/commons/2/25/George_Washington_as_CIC_of_the_Continental_Army_bust.jpg"

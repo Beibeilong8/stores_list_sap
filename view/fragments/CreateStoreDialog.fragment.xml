@@ -19,33 +19,74 @@
 				<Label text="{i18n>StoreNameTitle}"/>
 				<Input 
 					value="{
-						path: 'newStoreModel>/Name',
+						path: 'Name',
 						type: 'sap.ui.model.type.String',
 						constraints: {
 							minLength: 1,
-							maxLength: 150
+							maxLength: 1000
 						}
 					}" 
-					placeholder="{i18n>StoreNameInput}" />
-
+					placeholder="{i18n>StoreNameInput}" 
+					required="true"
+					id="StoreName"/>
 				<Label text="{i18n>StoreEmailTitle}"/>
-				<Input value="{newStoreModel>/Email}" placeholder="{i18n>StoreEmailInput}"/>
-
-				<Label text="{i18n>StorePhoneNumberTitle}"/>
-				<Input value="{newStoreModel>/PhoneNumber}" placeholder="{i18n>StorePhoneNumberInput}"/>
-
-				<Label text="{i18n>StoreAddressTitle}"/>
-				<Input value="{newStoreModel>/Address}" placeholder="{i18n>StoreAddressInput}"/>
-
-				<Label text="{i18n>StoreEstablishedTitle}"/>
-				<DatePicker 
+				<Input 
 					value="{
-						path: 'newStoreModel>/Established'
-						type: 'sap.ui.model.type.DateTime'}" 
-					placeholder="{i18n>StoreEstablishedInput}"/>
-
+						path: 'Email',
+						type: 'sap.ui.model.type.String',
+						constraints: {
+							minLength: 1,
+							maxLength: 1000
+						}
+					}" 
+					placeholder="{i18n>StoreEmailInput}"
+					required="true"
+					id="StoreEmail"/>
+				<Label text="{i18n>StorePhoneNumberTitle}"/>
+				<Input 
+					value="{
+						path: 'PhoneNumber',
+						type: 'sap.ui.model.type.Integer',
+						constraints: {
+							minLength: 1,
+							maxLength: 11
+						}
+					}" 
+					placeholder="{i18n>StorePhoneNumberInput}"
+					required="true"
+					id="StorePhone"/>
+				<Label text="{i18n>StoreAddressTitle}"/>
+				<Input 
+					value="{
+						path: 'Address',
+						type: 'sap.ui.model.type.String',
+						constraints: {
+							minLength: 1,
+							maxLength: 1000
+						}
+					}" 
+					placeholder="{i18n>StoreAddressInput}"
+					required="true"
+					id="StoreAddress"/>
+				<Label text="{i18n>StoreEstablishedTitle}" labelFor="StoreEstablished"/>
+				<DatePicker 
+					change="Established" 
+					placeholder="{i18n>StoreEstablishedInput}"
+					required="true"
+					id="StoreEstablished"/>
 				<Label text="{i18n>StoreFloorAreaTitle}"/>
-				<Input value="{newStoreModel>/FloorArea}" placeholder="{i18n>StoreFloorAreaInput}"/>
+				<Input 
+					value="{
+						path: 'FloorArea',
+						type: 'sap.ui.model.type.Integer',
+						constraints: {
+							minLength: 1,
+							maxLength: 100
+						}
+					}" 
+					placeholder="{i18n>StoreFloorAreaInput}"
+					required="true"
+					id="StoreFloorArea"/>
 			</f:content>
 		</f:SimpleForm>
 

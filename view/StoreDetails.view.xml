@@ -104,26 +104,22 @@
 									<OverflowToolbarButton
 										tooltip="{i18n>ProductsTableNameColumn}"
 										type="Transparent"
-										icon="sap-icon://{
-											path: 'appView>/sortType',
-											formatter: '.sortTypeFormatter'
-										}"
+										icon="sap-icon://sort"
 										text="Name"
-										press="onSortButtonPress"/>
+										press="onSortButtonPress($event, 'Name')"/>
 									<Text text="{i18n>ProductsTableNameColumn}" class="sapUiTinyMarginTop"/>
 								</HBox>
 							</Column>
-							<Column minScreenWidth="Tablet" demandPopin="true">
+							<Column 
+								minScreenWidth="Tablet" 
+								demandPopin="true">
 								<HBox>
 									<OverflowToolbarButton
 										tooltip="{i18n>ProductsTablePriceColumn}"
 										type="Transparent"
-										icon="sap-icon://{
-											path: 'appView>/sortType',
-											formatter: '.sortTypeFormatter'
-										}"
+										icon="sap-icon://sort"
 										text="Price"
-										press="onSortButtonPress"/>
+										press="onSortButtonPress($event, 'Price')"/>
 									<Text text="{i18n>ProductsTablePriceColumn}" class="sapUiTinyMarginTop"/>
 								</HBox>
 							</Column>
@@ -135,12 +131,9 @@
 									<OverflowToolbarButton
 										tooltip="{i18n>ProductsTableSpecsColumn}"
 										type="Transparent"
-										icon="sap-icon://{
-											path: 'appView>/sortType',
-											formatter: '.sortTypeFormatter'
-										}"
+										icon="sap-icon://sort"
 										text="Specs"
-										press="onSortButtonPress"/>
+										press="onSortButtonPress($event, 'Specs')"/>
 									<Text text="{i18n>ProductsTableSpecsColumn}" class="sapUiTinyMarginTop"/>
 								</HBox>
 							</Column>
@@ -152,62 +145,62 @@
 									<OverflowToolbarButton
 										tooltip="{i18n>ProductsTableSupplierInfoColumn}"
 										type="Transparent"
-										icon="sap-icon://{
-											path: 'appView>/sortType',
-											formatter: '.sortTypeFormatter'
-										}"
+										icon="sap-icon://sort"
 										text="SupplierInfo"
-										press="onSortButtonPress"/>
+										press="onSortButtonPress($event, 'SupplierInfo')"/>
 									<Text text="{i18n>ProductsTableSupplierInfoColumn}" class="sapUiTinyMarginTop"/>
 								</HBox>
 							</Column>
-							<Column hAlign="End">
+							<Column 
+								minScreenWidth="Desktop"
+								demandPopin="true" 
+								hAlign="End" >
 								<HBox>
 									<OverflowToolbarButton
 										tooltip="{i18n>ProductsTableOriginCountryColumn}"
 										type="Transparent"
-										icon="sap-icon://{
-											path: 'appView>/sortType',
-											formatter: '.sortTypeFormatter'
-										}"
+										icon="sap-icon://sort"
 										text="MadeIn"
-										press="onSortButtonPress"/>
+										press="onSortButtonPress($event, 'MadeIn')"/>
 									<Text 
 										text="{i18n>ProductsTableOriginCountryColumn}"
 										class="sapUiTinyMarginTop sapUiTinyMarginBottom"/>
 								</HBox>
 							</Column>
-							<Column hAlign="End">
+							<Column 
+								minScreenWidth="Tablet"
+								demandPopin="true" 
+								hAlign="End">
 								<HBox>
 									<OverflowToolbarButton
 										tooltip="{i18n>ProductsTableCompanyColumn}"
 										type="Transparent"
-										icon="sap-icon://{
-											path: 'appView>/sortType',
-											formatter: '.sortTypeFormatter'
-										}"
+										icon="sap-icon://sort"
 										text="ProductionCompanyName"
-										press="onSortButtonPress"/>
+										press="onSortButtonPress($event, 'ProductionCompanyName')"/>
 									<Text 
 										text="{i18n>ProductsTableCompanyColumn}"
 										class="sapUiTinyMarginTop sapUiTinyMarginBottom"/>
 								</HBox>
 							</Column>
-							<Column hAlign="End">
+							<Column 
+								minScreenWidth="Small"
+								demandPopin="true" 
+								hAlign="End">
 								<HBox>
 									<OverflowToolbarButton
 										tooltip="{i18n>ProductsTableRatingColumn}"
 										type="Transparent"
-										icon="sap-icon://{
-											path: 'appView>/sortType',
-											formatter: '.sortTypeFormatter'
-										}"
+										icon="sap-icon://sort"
 										text="Rating"
-										press="onSortButtonPress"/>
+										press="onSortButtonPress($event, 'Rating')"/>
 									<Text text="{i18n>ProductsTableRatingColumn}" class="sapUiTinyMarginTop"/>
 								</HBox>
 							</Column>
-							<Column hAlign="End">
+							<Column 
+								minScreenWidth="Small"
+								demandPopin="true" 
+								hAlign="End">
 								<Text text="" />
 							</Column>
 						</columns>
@@ -247,7 +240,10 @@
 										tooltip="{i18n>ProductsTableRatingColumn}"
 										editable="false"/>
 									<HBox>
-										<Button type="Transparent" icon="sap-icon://edit"/>
+										<Button 
+											type="Transparent" 
+											icon="sap-icon://edit"
+											press="onEditProductPress"/>
 										<Button 
 											type="Transparent" 
 											icon="sap-icon://decline" 
